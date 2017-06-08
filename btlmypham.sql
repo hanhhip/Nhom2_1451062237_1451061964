@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 04, 2017 at 05:46 PM
+-- Generation Time: Jun 08, 2017 at 05:25 PM
 -- Server version: 5.7.14
 -- PHP Version: 5.6.25
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `danhmuc` (
   `IdDM` int(11) NOT NULL,
   `nameDM` varchar(200) COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `danhmuc`
@@ -38,10 +38,42 @@ CREATE TABLE `danhmuc` (
 INSERT INTO `danhmuc` (`IdDM`, `nameDM`) VALUES
 (1, 'Trang Điểm Nền'),
 (2, 'Trang Điểm Điểm'),
-(6, 'Quan Tâm'),
-(5, 'Sản Phẩm Khác'),
+(3, 'Mỹ Phẩm Tẩy Trang'),
 (4, 'Dưỡng Da'),
-(3, 'Mỹ Phẩm Tẩy Trang');
+(5, 'Sản Phẩm Khác'),
+(6, 'Quan Tâm');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `giohang`
+--
+
+CREATE TABLE `giohang` (
+  `IdGH` int(20) NOT NULL,
+  `idSP` int(11) NOT NULL,
+  `User` varchar(200) COLLATE utf8_unicode_ci NOT NULL,
+  `SoLuong` int(100) NOT NULL,
+  `TinhTrang` text COLLATE utf8_unicode_ci NOT NULL,
+  `NgayDat` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hoadon`
+--
+
+CREATE TABLE `hoadon` (
+  `IdHD` int(10) NOT NULL,
+  `hoten` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
+  `diachi` text COLLATE utf8_unicode_ci NOT NULL,
+  `dienthoai` int(20) NOT NULL,
+  `idSP` int(11) NOT NULL,
+  `SoLuong` int(11) NOT NULL,
+  `TongTien` float NOT NULL,
+  `NgayDat` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -98,6 +130,20 @@ ALTER TABLE `danhmuc`
   ADD PRIMARY KEY (`IdDM`);
 
 --
+-- Indexes for table `giohang`
+--
+ALTER TABLE `giohang`
+  ADD PRIMARY KEY (`IdGH`),
+  ADD KEY `IdSP` (`idSP`);
+
+--
+-- Indexes for table `hoadon`
+--
+ALTER TABLE `hoadon`
+  ADD PRIMARY KEY (`IdHD`),
+  ADD KEY `IdSP` (`idSP`);
+
+--
 -- Indexes for table `spham`
 --
 ALTER TABLE `spham`
@@ -112,12 +158,44 @@ ALTER TABLE `spham`
 -- AUTO_INCREMENT for table `danhmuc`
 --
 ALTER TABLE `danhmuc`
-  MODIFY `IdDM` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `IdDM` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT for table `giohang`
+--
+ALTER TABLE `giohang`
+  MODIFY `IdGH` int(20) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `hoadon`
+--
+ALTER TABLE `hoadon`
+  MODIFY `IdHD` int(10) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `spham`
 --
 ALTER TABLE `spham`
   MODIFY `idSP` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `danhmuc`
+--
+ALTER TABLE `danhmuc`
+  ADD CONSTRAINT `danhmuc_ibfk_1` FOREIGN KEY (`IdDM`) REFERENCES `spham` (`IdDM`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `giohang`
+--
+ALTER TABLE `giohang`
+  ADD CONSTRAINT `giohang_ibfk_1` FOREIGN KEY (`idSP`) REFERENCES `spham` (`idSP`);
+
+--
+-- Constraints for table `hoadon`
+--
+ALTER TABLE `hoadon`
+  ADD CONSTRAINT `hoadon_ibfk_1` FOREIGN KEY (`idSP`) REFERENCES `spham` (`idSP`) ON DELETE CASCADE ON UPDATE CASCADE;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
